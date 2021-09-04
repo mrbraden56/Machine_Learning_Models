@@ -11,7 +11,7 @@ class SVD:
         self.V_t=np.zeros((self.array.shape[1], self.array.shape[1]))
         self.sigma_values=[]
 
-    def get_eigen_values(self, dict):
+    def get_eigen_values(self, dict)->None:
         V=[]
         for key,value in dict.items():
             V.append(value)
@@ -19,14 +19,14 @@ class SVD:
         self.V=nparray.T
         self.V_t=nparray
 
-    def find_sigma(self, values):
+    def find_sigma(self, values)->None:
         values=-np.sort(-values)#sorts values from greatest to least
         self.sigma_values=np.sqrt(values)
         row, col=np.diag_indices(self.sigma.shape[0])
         self.sigma[row, col]=np.array(values)
         self.sigma=np.sqrt(self.sigma)
 
-    def find_V(self):
+    def find_V(self)->None:
         V=np.matmul(np.transpose(self.array), self.array)
         eigenvector=np.zeros(V.shape)
         eigen_values, eigenvector=np.linalg.eig(V)
@@ -37,7 +37,7 @@ class SVD:
         eigen_dict={k: v for k,v in sorted(eigen_dict.items(), reverse=True)}
         self.get_eigen_values(eigen_dict)
         
-    def get_U_from_V(self):
+    def get_U_from_V(self)->None:
         U=[]
         for i,val in enumerate(self.sigma_values):
             x=(1/val)*(self.array)
@@ -47,7 +47,7 @@ class SVD:
         self.U=np.concatenate([U[0], U[1]], axis=1)
 
 
-    def find_U(self):
+    def find_U(self)->np.ndarray:
         U=np.matmul(self.array, np.transpose(self.array))
         eigen_values=np.linalg.eigvals(U)
         self.find_sigma(eigen_values)
@@ -56,7 +56,7 @@ class SVD:
 
         return self.U, self.sigma, self.V
 
-    def SVD(self):
+    def SVD(self)->np.ndarray:
         U, Sigma, V=self.find_U()
         return U, Sigma, V
 
